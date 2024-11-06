@@ -1,0 +1,56 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+   <!-- Filter Section -->
+
+    <div class="max-w-6xl mx-auto px-3 mt-2 sm:px-5 lg:px-7 py-3 flex justify-center flex-wrap gap-2">
+      <a href="/listings">
+        <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-blue-600 hover:scale-105 active:bg-blue-700 active:text-white h-10 px-4 py-2">
+          All
+        </button>
+      </a>
+      <% for(let animate of animaties_arrray) { %>
+        <a href="/listings?amenity=<%= animate %>" class="<%= currentAmenity === animate ? 'active' : '' %>">
+          <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-xs font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-blue-600 hover:scale-105 active:bg-blue-700 active:text-white h-10 px-2 py-1.5">
+            <%= animate.charAt(0).toUpperCase() + animate.slice(1).toLowerCase() %>
+          </button>
+        </a>
+      <% } %>
+    </div>
+
+
+  <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+    <% for (let listing of allListings) { %>
+      <a href="/listings/<%= listing._id %>">
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden transform transition-all duration-500 hover:-translate-y-2 hover:shadow-xl cursor-pointer">
+          <div class="relative">
+            <img
+              src="<%= listing.image.url %>"
+              alt="<%= listing.image.filename %>"
+              width="600"
+              height="400"
+              class="w-full h-64 object-cover"
+              style="aspect-ratio: 600 / 400; object-fit: cover;"
+            />
+            <div class="absolute top-4 right-4 bg-gray-900 text-white px-3 py-1 rounded-full text-xs"><%= listing.country %>
+            </div>
+            <% if (listing.averageRating !== "") { %>
+              <div class="absolute bottom-4 left-4 bg-gray-900 text-white px-3 py-1 rounded-full text-xs">
+                <%= listing.averageRating %>
+              </div>
+            <% } %>
+            
+          </div>
+          <div class="p-6 flex flex-col justify-between h-full">
+            <div>
+              <h3 class="text-2xl font-bold mb-2"><%= listing.title %></h3>
+              <p class="text-gray-500 text-base"><%= listing.location %>, <%= listing.country %></p>
+              <div class="flex items-center justify-between mt-6">
+                <span class="text-3xl font-bold">&#8377;<%= listing.price %>/night</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    <% } %>
+  </section>
+</body>
